@@ -1,0 +1,45 @@
+{
+    "0": {
+        "choices": [
+            [
+                "go left",
+                "1"
+            ],
+            [
+                "go right",
+                "2"
+            ]
+        ],
+        "name": "",
+        "text": "welcome to a cave its a cave. This is an example senario"
+    },
+    "1": {
+        "choices": [
+            [
+                "say 'ya of course'",
+                "3"
+            ],
+            [
+                "say 'no way!'",
+                "4"
+            ]
+        ],
+        "name": "",
+        "text": "in the left you meet a wizard. He tells you a long story but you tune it out."
+    },
+    "2": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    },
+    "3": {
+        "choices": [],
+        "name": "",
+        "text": "the wizard looks at you shocked!"
+    },
+    "4": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    }
+}
