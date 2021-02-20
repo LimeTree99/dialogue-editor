@@ -1,4 +1,4 @@
-import gui
+from lib import gui
 
 
 if __name__ == "__main__":
