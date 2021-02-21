@@ -6,26 +6,31 @@ from lib.senario import Senario
 
 
 class Primitives:
+    font = ('Helvetica', 12)
+    fgcolor='SlateBlue2'
     class Frame(tk.Frame):
         def __init__(self, parent):
             super().__init__(parent, 
-                             background='gray98')
+                             background='gray96')
 
     class Label(tk.Label):
         def __init__(self, parent, text):
             super().__init__(parent, 
                              text=text,
-                             background='gray98')
+                             background='gray96',
+                              font=Primitives.font)
 
     class Button(tk.Button):
-        def __init__(self, parent, text, command):
+        def __init__(self, parent, text, command, width=0):
             super().__init__(parent, 
                              text=text, 
                              command=command,
                              border=0,
-                             background="gray98")
+                             background="gray96",
+                             font=Primitives.font,
+                             width=width)
             
-            self.hover = 'gray90'
+            self.hover = Primitives.fgcolor
             
             self.bind("<Enter>", self.mouse_over)
             self.bind("<Leave>", self.mouse_away)
@@ -42,9 +47,9 @@ class Primitives:
                              width=width,
                              border=1,
                              highlightcolor='red',
-                             relief=tk.RAISED)
+                             relief=tk.RAISED,
+                             font=Primitives.font)
             
-
 
     class Buttonlis(Frame):
         def __init__(self, parent, text_lis=[], command_lis=[], pack_side=tk.TOP):
@@ -74,7 +79,7 @@ class Primitives:
             self.text['yscrollcommand'] = self.scrollb.set
 
             self.scrollb.pack(side=tk.RIGHT, fill=tk.Y)
-            self.text.pack(side=tk.RIGHT)
+            self.text.pack(side=tk.RIGHT, expand=True)
         
         def set_text(self, text):
             self.text.delete(1.0, "end")
@@ -90,8 +95,8 @@ class Mine:
             super().__init__(parent)
 
             self.text = Primitives.Entry(self, width=width)
-            self.text.pack(side=tk.RIGHT, fill=tk.X)
-            Primitives.Label(self, name).pack(side=tk.RIGHT)
+            self.text.pack(side=tk.RIGHT, fill=tk.X, expand=True)
+            Primitives.Label(self, name).pack(side=tk.RIGHT, expand=True)
 
         def set_text(self, text):
             self.text.delete(0, "end")
@@ -102,14 +107,14 @@ class Mine:
 
     class Text_button_frame(Primitives.Frame):
         "button on left small entry on right"
-        def __init__(self, parent, button_text, command, width=40):
+        def __init__(self, parent, button_text, command, width=30):
             super().__init__(parent)
 
             self.text = Primitives.Entry(self, width=width)
-            self.text.pack(side=tk.RIGHT, fill=tk.X)
+            self.text.pack(side=tk.RIGHT, fill=tk.X, expand=True)
 
-            self.button = Primitives.Button(self, button_text, command)
-            self.button.pack(side=tk.RIGHT)
+            self.button = Primitives.Button(self, button_text, command, width=5)
+            self.button.pack(side=tk.RIGHT, expand=True)
 
         def set_command(self, var):
             self.button.configure(command=var)
@@ -129,9 +134,9 @@ class Mine:
             self.widgit_lis = []
             names = ["A.", "B.", "C.", "D.", "E.", "F."]
             for i in range(len(names)):
-                entry = Mine.Text_button_frame(self, names[i], lambda a=i: self.open_senario(a), width=100)
+                entry = Mine.Text_button_frame(self, names[i], lambda a=i: self.open_senario(a), width=70)
                 self.widgit_lis.append(entry)
-                entry.pack(fill=tk.X)
+                entry.pack(fill=tk.X, expand=True)
 
         def open_senario(self, choice_index):
             self.save()
@@ -168,9 +173,9 @@ class Mine:
             self.choice = Mine.Choice_frame(self, self.mainapp)
             
 
-            self.name.pack()
+            self.name.pack(expand=True)
             self.text.pack(expand=True)
-            self.choice.pack()
+            self.choice.pack(expand=True)
 
         def load_senario(self, senario):
             if senario.tag_exists("name"):
@@ -188,8 +193,11 @@ class Mine:
         def __init__(self, parent, mainapp):
             super().__init__(parent)
             self.mainapp = mainapp
+            self.label = Primitives.Label(self, "Previous Senarios")
             self.buttons = Primitives.Buttonlis(self)
-            self.buttons.pack()
+
+            self.label.pack(side=tk.TOP)
+            self.buttons.pack(fill=tk.X, expand=True)
 
         def load(self):
             previous_senarios = self.mainapp.senario.find_prev_senarios_id()
@@ -234,8 +242,8 @@ class MainApp:
         self.edit_frame = Mine.Editframe(self.root, self)
         self.info_frame = Mine.Infoframe(self.root, self)
 
-        self.edit_frame.pack(side=tk.RIGHT, expand=True)
-        self.info_frame.pack(side=tk.RIGHT)
+        self.edit_frame.pack(side=tk.RIGHT, fill=tk.Y, expand=True)
+        self.info_frame.pack(side=tk.RIGHT, anchor="nw", expand=True)
 
     def go_to_senario(self, id_str):
         if self.senario.id_exists(id_str):
