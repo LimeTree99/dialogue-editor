@@ -7,18 +7,21 @@ from lib.senario import Senario
 
 class Primitives:
     font = ('Helvetica', 12)
-    fgcolor='SlateBlue2'
+    button_highlight='Gray60'
+    bordercolor='gray60'
+    
     class Frame(tk.Frame):
         def __init__(self, parent):
             super().__init__(parent, 
                              background='gray96')
 
     class Label(tk.Label):
-        def __init__(self, parent, text):
+        def __init__(self, parent, text, width=0):
             super().__init__(parent, 
                              text=text,
                              background='gray96',
-                              font=Primitives.font)
+                             font=Primitives.font,
+                             width=width)
 
     class Button(tk.Button):
         def __init__(self, parent, text, command, width=0):
@@ -28,9 +31,10 @@ class Primitives:
                              border=0,
                              background="gray96",
                              font=Primitives.font,
-                             width=width)
+                             width=width,
+                             cursor="hand2")
             
-            self.hover = Primitives.fgcolor
+            self.hover = Primitives.button_highlight
             
             self.bind("<Enter>", self.mouse_over)
             self.bind("<Leave>", self.mouse_away)
@@ -45,9 +49,9 @@ class Primitives:
         def __init__(self, parent, width=40):
             super().__init__(parent, 
                              width=width,
-                             border=1,
-                             highlightcolor='red',
-                             relief=tk.RAISED,
+                             highlightthickness=1,
+                             relief=tk.FLAT,
+                             highlightbackground=Primitives.bordercolor,
                              font=Primitives.font)
             
 
@@ -73,7 +77,12 @@ class Primitives:
         "large text space with scroll bar on right"
         def __init__(self, parent):
             super().__init__(parent)
-            self.text = tk.Text(self)
+            self.text = tk.Text(self, 
+                                wrap=tk.WORD,
+                                highlightthickness=1,
+                                relief=tk.FLAT,
+                                highlightbackground=Primitives.bordercolor)
+
             self.scrollb = ttk.Scrollbar(self, command=self.text.yview)
             
             self.text['yscrollcommand'] = self.scrollb.set
@@ -174,7 +183,7 @@ class Mine:
             
 
             self.name.pack(expand=True)
-            self.text.pack(expand=True)
+            self.text.pack(anchor="e", expand=True)
             self.choice.pack(expand=True)
 
         def load_senario(self, senario):
@@ -193,7 +202,7 @@ class Mine:
         def __init__(self, parent, mainapp):
             super().__init__(parent)
             self.mainapp = mainapp
-            self.label = Primitives.Label(self, "Previous Senarios")
+            self.label = Primitives.Label(self, "Previous Senarios", width=20)
             self.buttons = Primitives.Buttonlis(self)
 
             self.label.pack(side=tk.TOP)
@@ -268,14 +277,16 @@ class MainApp:
     def new_senario(self):
         self.senario.new_game()
         self.load_senario()
+        self.root.title("Dialogue")
 
     def open_senario(self):
-        data = [('json (*.json)', '*.json'), 
+        data = [('json (*.json)', '*.json'),
                 ('All tyes(*.*)', '*.*')]
         file = filedialog.askopenfile(filetypes = data, defaultextension = data)
         if file != None:
             self.senario.load_file(file.name)
             self.load_senario()
+            self.root.title(f"Dialogue - {file.name}")
 
     def save_file(self):
         if self.senario.file_path == None:
@@ -292,6 +303,7 @@ class MainApp:
         if file != None:
             self.save_senario()
             self.senario.save_as_file(file.name)
+            self.root.title(f"Dialogue - {file.name}")
 
     def exit(self):
         if self.senario.file_path == None:
