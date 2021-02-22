@@ -149,7 +149,8 @@ class Mine:
 
         def open_senario(self, choice_index):
             self.save()
-            self.mainapp.go_to_senario(self.mainapp.senario["choices"][choice_index][1])
+            if choice_index < len(self.mainapp.senario["choices"]):
+                self.mainapp.go_to_senario(self.mainapp.senario["choices"][choice_index][1])
 
         def set_choice_lis(self):
             choices = self.mainapp.senario.get_from_tag("choices")
