@@ -6,7 +6,8 @@ from lib.senario import Senario
 
 
 class Primitives:
-    font = ('Helvetica', 12)
+    font_heading = ('Cobert', 12)
+    font_body = ('Cobert', 11)
     button_highlight='Gray60'
     bordercolor='gray60'
     
@@ -20,7 +21,7 @@ class Primitives:
             super().__init__(parent, 
                              text=text,
                              background='gray96',
-                             font=Primitives.font,
+                             font=Primitives.font_heading,
                              width=width)
 
     class Button(tk.Button):
@@ -30,7 +31,7 @@ class Primitives:
                              command=command,
                              border=0,
                              background="gray96",
-                             font=Primitives.font,
+                             font=Primitives.font_heading,
                              width=width,
                              cursor="hand2")
             
@@ -52,7 +53,7 @@ class Primitives:
                              highlightthickness=1,
                              relief=tk.FLAT,
                              highlightbackground=Primitives.bordercolor,
-                             font=Primitives.font)
+                             font=Primitives.font_heading)
             
 
     class Buttonlis(Frame):
@@ -81,7 +82,8 @@ class Primitives:
                                 wrap=tk.WORD,
                                 highlightthickness=1,
                                 relief=tk.FLAT,
-                                highlightbackground=Primitives.bordercolor)
+                                highlightbackground=Primitives.bordercolor,
+                                font=Primitives.font_body)
 
             self.scrollb = ttk.Scrollbar(self, command=self.text.yview)
             
@@ -116,7 +118,7 @@ class Mine:
 
     class Text_button_frame(Primitives.Frame):
         "button on left small entry on right"
-        def __init__(self, parent, button_text, command, width=30):
+        def __init__(self, parent, button_text, command, width=20):
             super().__init__(parent)
 
             self.text = Primitives.Entry(self, width=width)
@@ -203,7 +205,7 @@ class Mine:
         def __init__(self, parent, mainapp):
             super().__init__(parent)
             self.mainapp = mainapp
-            self.label = Primitives.Label(self, "Previous Senarios", width=20)
+            self.label = Primitives.Label(self, "Previous Senarios", width=30)
             self.buttons = Primitives.Buttonlis(self)
 
             self.label.pack(side=tk.TOP)
@@ -217,7 +219,7 @@ class Mine:
             for i in range(len(previous_senarios)):
                 id_str = previous_senarios[i]
                 
-                info_str = self.mainapp.senario.get_info_str(id_str, 30)
+                info_str = self.mainapp.senario.get_info_str(id_str, 23)
                 info_text.append(info_str)
 
                 commands.append(lambda a=id_str: self.mainapp.go_to_senario(a))

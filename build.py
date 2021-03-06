@@ -3,7 +3,7 @@ import PyInstaller.__main__
 
 
 NAME = 'dialogue-editor'
-VERSION = '0_0'
+VERSION = '0_0_1'
 
 README = \
 """
