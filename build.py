@@ -1,9 +1,10 @@
 import os
 import PyInstaller.__main__
+import shutil
 
 
 NAME = 'dialogue-editor'
-VERSION = '0_0_1'
+VERSION = '0_0_2'
 
 README = \
 """
@@ -18,6 +19,7 @@ evhemsley
 """
 
 PATH = f"./dist/{NAME}-{VERSION}"
+ARCHIVE_NAME = PATH
 
 #builds project
 PyInstaller.__main__.run([
@@ -37,3 +39,6 @@ with open(f"{PATH}/readme.txt", "w") as fh:
 #delete unused files
 if os.path.exists("app.spec"):
     os.remove("app.spec")
+
+# zip to archive
+shutil.make_archive(ARCHIVE_NAME, 'zip', PATH)
