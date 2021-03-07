@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 from tkinter import filedialog
 
 from lib.senario import Senario
-from lib.gui import Primitives
+from lib.gui import Primitives, Style
 
 class Mine:
     class Text_peram_frame(Primitives.Frame):
@@ -28,10 +28,10 @@ class Mine:
             super().__init__(parent)
 
             self.text = Primitives.Entry(self, width=width)
-            self.text.pack(side=tk.RIGHT, fill=tk.X, expand=True)
+            self.text.pack(side=tk.RIGHT, fill=tk.X,padx=5, expand=True)
 
             self.button = Primitives.Button(self, button_text, command, width=5)
-            self.button.pack(side=tk.RIGHT, expand=True)
+            self.button.pack(side=tk.RIGHT, pady=1)
 
         def set_command(self, var):
             self.button.configure(command=var)
@@ -91,9 +91,9 @@ class Mine:
             self.choice = Mine.Choice_frame(self, self.mainapp)
             
 
-            self.name.pack(expand=True)
-            self.text.pack(anchor="e", expand=True)
-            self.choice.pack(expand=True)
+            self.name.pack(anchor='nw',)
+            self.text.pack(fill='both', expand=True)
+            self.choice.pack(anchor='w',fill=tk.X)
 
         def load_senario(self, senario):
             if senario.tag_exists("name"):
@@ -115,7 +115,7 @@ class Mine:
             self.buttons = Primitives.Buttonlis(self)
 
             self.label.pack(side=tk.TOP)
-            self.buttons.pack(fill=tk.X, expand=True)
+            self.buttons.pack(fill=tk.X, anchor='n', expand=True)
 
         def load(self):
             previous_senarios = self.mainapp.senario.find_prev_senarios_id()
@@ -139,7 +139,7 @@ class MainApp:
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.title("Dialogue")
-        self.root.configure(background='gray98')
+        self.root.configure(background=Style.background)
         self.root.state("zoomed")
 
         self.change_made = False
@@ -161,8 +161,9 @@ class MainApp:
         self.edit_frame = Mine.Editframe(self.root, self)
         self.info_frame = Mine.Infoframe(self.root, self)
 
-        self.edit_frame.pack(side=tk.RIGHT, fill=tk.Y, expand=True)
-        self.info_frame.pack(side=tk.RIGHT, anchor="nw", expand=True)
+        self.info_frame.pack(side=tk.LEFT, fill=tk.Y, anchor="nw", expand=True)
+        self.edit_frame.pack(side=tk.LEFT, fill='both', expand=True)
+        
 
     def go_to_senario(self, id_str):
         if self.senario.id_exists(id_str):

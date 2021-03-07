@@ -7,21 +7,23 @@ class Style:
     button_highlight='Gray60'
     bordercolor='gray60'
 
-    bg = 'gray96'
+    background = 'gray75'
+    button_background = 'gray75'
+    textbox_color = 'gray89'
 
 
 class Primitives:    
     class Frame(tk.Frame):
         def __init__(self, parent, *args, **kwargs):
 
-            kwargs = {"background":Style.bg} | kwargs
+            kwargs = {"background":Style.background} | kwargs
 
             super().__init__(parent, *args, **kwargs)
 
     class Label(tk.Label):
         def __init__(self, parent, text, *args, **kwargs):
 
-            kwargs = {"background":'gray96',
+            kwargs = {"background":Style.background,
                       "font":Style.font_heading, 
                       "width":0} | kwargs      # adds the defalt arg to kwargs if the arg doesnt exist
             
@@ -30,24 +32,26 @@ class Primitives:
     class Button(tk.Button):
         def __init__(self, parent, text, command, *args, **kwargs):
 
-            kwargs= {'border':0,
-                     'background':"gray96",
+            kwargs= {'border':1,
+                     'highlightcolor':'red',
+                     'background':Style.button_background,
                      'font':Style.font_heading,
                      'width':0,
                      'cursor':"hand2"} | kwargs
 
             super().__init__(parent, text=text, command=command, *args, **kwargs)
             
-            self.hover = Style.button_highlight
+            self.hover_color = Style.button_highlight
+            self.background = kwargs['background']
             
             self.bind("<Enter>", self.mouse_over)
             self.bind("<Leave>", self.mouse_away)
 
         def mouse_over(self, e):
-            self['background'] = self.hover
+            self['background'] = self.hover_color
         
         def mouse_away(self, e):
-            self['background'] = 'SystemButtonFace'
+            self['background'] = self.background
     
     class Entry(tk.Entry):
         def __init__(self, parent, *args, **kwargs):
@@ -56,6 +60,7 @@ class Primitives:
                       'highlightthickness':1,
                       'relief':tk.FLAT,
                       'highlightbackground':Style.bordercolor,
+                      'background':Style.textbox_color,
                       'font':Style.font_heading} | kwargs
 
             super().__init__(parent, *args, **kwargs)
@@ -87,6 +92,7 @@ class Primitives:
                                 wrap=tk.WORD,
                                 highlightthickness=1,
                                 relief=tk.FLAT,
+                                background = Style.textbox_color,
                                 highlightbackground=Style.bordercolor,
                                 font=Style.font_body)
 
@@ -95,7 +101,7 @@ class Primitives:
             self.text['yscrollcommand'] = self.scrollb.set
 
             self.scrollb.pack(side=tk.RIGHT, fill=tk.Y)
-            self.text.pack(side=tk.RIGHT, expand=True)
+            self.text.pack(side=tk.RIGHT, fill='both', expand=True)
         
         def set_text(self, text):
             self.text.delete(1.0, "end")
