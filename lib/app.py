@@ -22,16 +22,22 @@ class Mine:
         def get_text(self):
             return self.text.get()
 
-    class Text_button_frame(Primitives.Frame):
-        "button on left small entry on right"
-        def __init__(self, parent, button_text, command, width=20):
+    class Choice_navigation(Primitives.Frame):
+        "for use in navigating through the choices"
+        def __init__(self, parent, button_text, command, link_list):
             super().__init__(parent)
 
-            self.text = Primitives.Entry(self, width=width)
-            self.text.pack(side=tk.RIGHT, fill=tk.X,padx=5, expand=True)
-
             self.button = Primitives.Button(self, button_text, command, width=5)
-            self.button.pack(side=tk.RIGHT, pady=1)
+            self.button.pack(side=tk.LEFT, pady=1)
+
+            self.text = Primitives.Entry(self, width=0)
+            self.text.pack(side=tk.LEFT, fill=tk.X,padx=5, expand=True)
+
+            self.link_list = link_list
+            self.link_name = tk.StringVar(parent)
+            self.link_name.set("No link")
+            self.link = Primitives.OptionMenu(self, self.link_name, *self.link_list)
+            self.link.pack(side=tk.LEFT)
 
         def set_command(self, var):
             self.button.configure(command=var)
@@ -43,6 +49,11 @@ class Mine:
         def get_text(self):
             return self.text.get()
 
+        def load_link_list(self, link_list):
+            self.link_list = link_list
+            self.link.set_options(self.link_list)
+
+
     class Choice_frame(Primitives.Frame):
         "entry and navigation of the choices"
         def __init__(self, parent, mainapp):
@@ -51,7 +62,10 @@ class Mine:
             self.widgit_lis = []
             names = ["A.", "B.", "C.", "D.", "E.", "F."]
             for i in range(len(names)):
-                entry = Mine.Text_button_frame(self, names[i], lambda a=i: self.open_senario(a), width=70)
+                entry = Mine.Choice_navigation(self, 
+                                               names[i], 
+                                               lambda a=i: self.open_senario(a), 
+                                               self.mainapp.senario.info_str_list(length=5))
                 self.widgit_lis.append(entry)
                 entry.pack(fill=tk.X, expand=True)
 
@@ -60,7 +74,8 @@ class Mine:
             if choice_index < len(self.mainapp.senario["choices"]):
                 self.mainapp.go_to_senario(self.mainapp.senario["choices"][choice_index][1])
 
-        def set_choice_lis(self):
+        def load(self):
+            #loads the entry with the options
             choices = self.mainapp.senario.get_from_tag("choices")
             for i in range(len(self.widgit_lis)):
                 if i < len(choices):
@@ -68,6 +83,9 @@ class Mine:
                 else:
                     #clear extra text
                     self.widgit_lis[i].set_text("")
+
+            #loads the link option
+            self.widgit_lis[i].load_link_list(self.mainapp.senario.info_str_list(length=5))
 
         def save(self):
             for i in range(len(self.widgit_lis)):
@@ -97,10 +115,12 @@ class Mine:
 
         def load_senario(self, senario):
             if senario.tag_exists("name"):
-                self.name.set_text(senario["name"])
-            self.text.set_text(senario["text"])
+                self.name.set_text(senario["name"])            
+
             if senario.tag_exists("choices"):
-                self.choice.set_choice_lis()
+                self.choice.load()
+
+            self.text.set_text(senario["text"])
 
         def save(self):
             self.choice.save()
@@ -143,6 +163,7 @@ class MainApp:
         self.root.state("zoomed")
 
         self.change_made = False
+        self.debug = True
 
         self.edit_frame = None
         self.info_frame = None
@@ -217,11 +238,14 @@ class MainApp:
             self.root.title(f"Dialogue - {file.name}")
 
     def exit(self):
-        if self.senario.file_path == None:
-            if messagebox.askokcancel("Unsaved Work", "You have unsaved work.\nAre you sure you want to quit?"):
-                self.root.destroy()
-        else:
+        if self.debug:
             self.root.destroy()
+        else:
+            if self.senario.file_path == None:
+                if messagebox.askokcancel("Unsaved Work", "You have unsaved work.\nAre you sure you want to quit?"):
+                    self.root.destroy()
+            else:
+                self.root.destroy()
 
     def bind_keys(self, *args):
         for arg, command in args:

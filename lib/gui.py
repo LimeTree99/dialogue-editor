@@ -64,6 +64,21 @@ class Primitives:
                       'font':Style.font_heading} | kwargs
 
             super().__init__(parent, *args, **kwargs)
+
+    class OptionMenu(tk.OptionMenu):
+        def __init__(self, parent, variable, value, *values, **kwargs):
+            super().__init__(parent, variable, value, *values, **kwargs)
+            
+        
+        def set_options(self, options):
+            self['menu'].delete(0, 'end')
+            for option in options:
+                self['menu'].add_command(label=option, command=tk._setit(self.anchor, option))
+
+    class Combobox(ttk.Combobox):
+        def __init__(self, parent, **kwargs):
+            super().__init__(parent, **kwargs)
+        
             
 
     class Buttonlis(Frame):

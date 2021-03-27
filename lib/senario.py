@@ -116,6 +116,13 @@ class Senario:
                 info = self.senarios[id_str]["text"][:length]
         return info
 
+    def info_str_list(self, length=30):
+        "returns a list of the info strings for each senario, in no particular order"
+        re = []
+        for id_str in self.senarios.keys():
+            re.append(self.get_info_str(id_str, length))
+        return re
+
     def __repr__(self):
         return self.senarios[self.senario_id]
 
