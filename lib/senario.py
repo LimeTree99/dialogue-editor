@@ -114,6 +114,8 @@ class Senario:
                 info = self.senarios[id_str]["text"]
             else:
                 info = self.senarios[id_str]["text"][:length]
+        if info == '':
+            info = '--empty option--'
         return info
 
     def info_str_list(self, length=30):
@@ -121,6 +123,15 @@ class Senario:
         re = []
         for id_str in self.senarios.keys():
             re.append(self.get_info_str(id_str, length))
+        return re
+
+    def info_id_list(self, length=30):
+        """
+        returns: a list of tuples where [(name, id), (name, id)]
+        """
+        re = []
+        for id_str in self.senarios.keys():
+            re.append((self.get_info_str(id_str, length), id_str))
         return re
 
     def __repr__(self):

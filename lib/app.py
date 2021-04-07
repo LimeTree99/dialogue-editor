@@ -6,6 +6,33 @@ from lib.senario import Senario
 from lib.gui import Primitives, Style
 
 class Mine:
+    class Linker(Primitives.Combobox):
+        def __init__(self, parent, **kwargs):
+            super().__init__(parent, state="readonly", **kwargs)
+            self.options = []
+            self.selected_id = None
+
+        def set_options(self, options, selected_id):
+            """
+            options: a list of tuples where [(name, id), (name, id)]
+            """
+            self.options = options
+            names = []
+            selected = None
+            for i, option in enumerate(self.options):
+                names.append(option[0])
+                if selected_id == option[1]:
+                    selected = i
+
+            if selected != None:
+                self.selected_id = selected_id
+
+            super().set_options(names, selected)
+
+        def select(self, event):
+            self.selected_id = self.options[self.current()][1]
+
+
     class Text_peram_frame(Primitives.Frame):
         "label on left small entry on right"
         def __init__(self, parent, name, width=40):
@@ -34,9 +61,8 @@ class Mine:
             self.text.pack(side=tk.LEFT, fill=tk.X,padx=5, expand=True)
 
             self.link_list = link_list
-            self.link_name = tk.StringVar(parent)
-            self.link_name.set("No link")
-            self.link = Primitives.OptionMenu(self, self.link_name, *self.link_list)
+            
+            self.link = Mine.Linker(self, values=self.link_list)
             self.link.pack(side=tk.LEFT)
 
         def set_command(self, var):
@@ -49,9 +75,12 @@ class Mine:
         def get_text(self):
             return self.text.get()
 
-        def load_link_list(self, link_list):
+        def load_link_list(self, link_list, selected_id):
             self.link_list = link_list
-            self.link.set_options(self.link_list)
+            self.link.set_options(self.link_list, selected_id)
+
+        def get_id(self):
+            return self.link.selected_id
 
 
     class Choice_frame(Primitives.Frame):
@@ -84,18 +113,26 @@ class Mine:
                     #clear extra text
                     self.widgit_lis[i].set_text("")
 
-            #loads the link option
-            self.widgit_lis[i].load_link_list(self.mainapp.senario.info_str_list(length=5))
+                #loads the link option
+                selected_id = None
+                if i < len(choices):
+                    selected_id = choices[i][1]
+                
+                self.widgit_lis[i].load_link_list(self.mainapp.senario.info_id_list(length=40), selected_id)
 
         def save(self):
             for i in range(len(self.widgit_lis)):
                 text = self.widgit_lis[i].get_text()
                 text = text.strip()
+                selected_id = self.widgit_lis[i].get_id()
                 choices = self.mainapp.senario["choices"]
                 if i < len(choices):
-                    choices[i][0] = text
+                    choices[i] = [text, selected_id]
                 elif text != '':
-                    choices.append([text, self.mainapp.senario.new_senario()])
+                    if selected_id != None:
+                        choices.append([text, selected_id])
+                    else:
+                        choices.append([text, self.mainapp.senario.new_senario()])
 
 
 
@@ -160,7 +197,7 @@ class MainApp:
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.title("Dialogue")
         self.root.configure(background=Style.background)
-        self.root.state("zoomed")
+        #self.root.state("zoomed")
 
         self.change_made = False
         self.debug = True
