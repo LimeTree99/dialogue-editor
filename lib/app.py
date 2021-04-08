@@ -11,6 +11,7 @@ class Mine:
             super().__init__(parent, state="readonly", **kwargs)
             self.options = []
             self.selected_id = None
+            self.unselected_option = "--create new--"
 
         def set_options(self, options, selected_id):
             """
@@ -24,7 +25,9 @@ class Mine:
                 if selected_id == option[1]:
                     selected = i
 
-            if selected != None:
+            if selected == None:
+                self.selected_id = None
+            else:
                 self.selected_id = selected_id
 
             super().set_options(names, selected)
@@ -121,18 +124,25 @@ class Mine:
                 self.widgit_lis[i].load_link_list(self.mainapp.senario.info_id_list(length=40), selected_id)
 
         def save(self):
+            print('s')
             for i in range(len(self.widgit_lis)):
                 text = self.widgit_lis[i].get_text()
                 text = text.strip()
                 selected_id = self.widgit_lis[i].get_id()
                 choices = self.mainapp.senario["choices"]
+                print(choices)
                 if i < len(choices):
-                    choices[i] = [text, selected_id]
-                elif text != '':
-                    if selected_id != None:
-                        choices.append([text, selected_id])
+                    if selected_id == None:
+                        choices[i][0] = text    #just change the text in order not to make selected_id = None
                     else:
+                        choices[i] = [text, selected_id]
+                    print(9)
+                elif text != '':
+                    print(8)
+                    if selected_id == None:
                         choices.append([text, self.mainapp.senario.new_senario()])
+                    else:
+                        choices.append([text, selected_id])
 
 
 

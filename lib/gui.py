@@ -71,6 +71,7 @@ class Primitives:
             super().__init__(parent, **kwargs)
             self.bind("<<ComboboxSelected>>", self.select) 
             self.bind("<FocusIn>", self.defocus)
+            self.unselected_option = ""
 
         def defocus(self, event):
             event.widget.master.focus_set()
@@ -78,7 +79,7 @@ class Primitives:
         def set_options(self, options, current=0):
             self['values'] = options
             if current == None:
-                self.set("")
+                self.set(self.unselected_option)
             else:
                 self.current(current)
         
