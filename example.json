@@ -2,30 +2,38 @@
     "0": {
         "choices": [
             [
-                "go left",
+                "talk to the weponsmith",
                 "1"
             ],
             [
-                "go right",
+                "talk to the fruit vendor",
                 "2"
+            ],
+            [
+                "talk to the woman in a dark cloak with deep hood",
+                "3"
             ]
         ],
-        "name": "",
-        "text": "welcome to a cave its a cave. This is an example senario"
+        "name": "start",
+        "text": "you walk into a village where you see a few market stalls and people"
     },
     "1": {
         "choices": [
             [
-                "say 'ya of course'",
-                "3"
+                "knife",
+                "4"
             ],
             [
-                "say 'no way!'",
-                "4"
+                "sheild",
+                "5"
+            ],
+            [
+                "chainmail vest",
+                "6"
             ]
         ],
         "name": "",
-        "text": "In the left you meet a wizard. He tells you a long story but you tune it out."
+        "text": "Arms n' armor, what's it you're lookin ter get."
     },
     "2": {
         "choices": [],
@@ -33,13 +41,51 @@
         "text": ""
     },
     "3": {
-        "choices": [],
+        "choices": [
+            [
+                "You say nothing",
+                "7"
+            ],
+            [
+                "\"no, I'm just passing through.\"",
+                "8"
+            ],
+            [
+                "\"no, I'm not. have you been here long?\"",
+                "9"
+            ]
+        ],
         "name": "",
-        "text": "the wizard looks at you shocked! You will go and retrive the fabelled amulet of Aernsbeard?! Hidden deap in the depths of the cave? Thank you good quester. He bows his head in respect."
+        "text": "As you aproach the woman she makes no indication of notising you. That is until the moment you take a breath. The air seems to catch for a moment, as though turned to ice. Abruptly the previously bustling sounds of the market fade, a feeling of floating swims across your body, and a cold voice cuts through the newfound stillness.\n\n\"You, You're not from around here are you\", the woman states."
     },
     "4": {
         "choices": [],
         "name": "",
-        "text": "The wizzard looks disheartened. He bows his head and says \"I undersand the quest will be difficult, have a good day\""
+        "text": ""
+    },
+    "5": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    },
+    "6": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    },
+    "7": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    },
+    "8": {
+        "choices": [],
+        "name": "",
+        "text": ""
+    },
+    "9": {
+        "choices": [],
+        "name": "",
+        "text": ""
     }
 }

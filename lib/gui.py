@@ -2,14 +2,15 @@ import tkinter as tk
 from tkinter import ttk
 
 class Style:
-    font_heading = ('Cobert', 12)
-    font_body = ('Cobert', 11)
+    font_heading = ('Arial', 13)
+    font_body = ('Arial', 13)
     button_highlight='Gray60'
     bordercolor='gray60'
 
-    background = 'gray75'
+    background = 'gray85'
     button_background = 'gray75'
-    textbox_color = 'gray89'
+    textbox_color = 'gray98'
+    line_space = 6
 
 
 class Primitives:    
@@ -115,7 +116,9 @@ class Primitives:
                                 relief=tk.FLAT,
                                 background = Style.textbox_color,
                                 highlightbackground=Style.bordercolor,
-                                font=Style.font_body)
+                                font=Style.font_body,
+                                spacing1=2,
+                                spacing2=Style.line_space)
 
             self.scrollb = ttk.Scrollbar(self, command=self.text.yview)
             

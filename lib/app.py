@@ -124,21 +124,17 @@ class Mine:
                 self.widgit_lis[i].load_link_list(self.mainapp.senario.info_id_list(length=40), selected_id)
 
         def save(self):
-            print('s')
             for i in range(len(self.widgit_lis)):
                 text = self.widgit_lis[i].get_text()
                 text = text.strip()
                 selected_id = self.widgit_lis[i].get_id()
                 choices = self.mainapp.senario["choices"]
-                print(choices)
                 if i < len(choices):
                     if selected_id == None:
                         choices[i][0] = text    #just change the text in order not to make selected_id = None
                     else:
                         choices[i] = [text, selected_id]
-                    print(9)
                 elif text != '':
-                    print(8)
                     if selected_id == None:
                         choices.append([text, self.mainapp.senario.new_senario()])
                     else:
@@ -210,13 +206,14 @@ class MainApp:
         #self.root.state("zoomed")
 
         self.change_made = False
-        self.debug = True
+        self.debug = False
 
         self.edit_frame = None
         self.info_frame = None
 
         self.bind_keys(("<Control-s>", lambda event: self.save_file()),
-                        ("<Control-Shift-S>", lambda event: self.save_as()))
+                       ("<Control-Shift-S>", lambda event: self.save_as()),
+                       ("<Control-o>", lambda event: self.open_senario()))
 
         self.senario = Senario()
 

@@ -4,7 +4,7 @@ import shutil
 
 
 NAME = 'dialogue-editor'
-VERSION = '0_0_2'
+VERSION = '0_0_3'
 
 README = \
 """
